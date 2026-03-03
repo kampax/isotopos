@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Puntos de Muestreo - Isótopos 2026</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .info-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .info-panel h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            right: 10px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            font-size: 13px;
+        }
+        
+        .legend h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        
+        .legend-item {
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .legend-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .punto-muestreo {
+            background: #e74c3c;
+            border: 2px solid white;
+        }
+        
+        .foto-marker {
+            background: #3498db;
+            border: 2px solid white;
+        }
+        
+        .popup-content h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .popup-content p {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+        
+        .popup-content img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .photo-thumbnail {
+            max-height: 200px;
+            object-fit: cover;
+        }
+        
+        .leaflet-popup-content {
+            margin: 15px;
+            min-width: 200px;
+        }
+        
+        /* Estilo para los marcadores de puntos de muestreo */
+        .marker-punto {
+            background-color: #e74c3c;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 12px;
+        }
+        
+        /* Estilo para los marcadores de fotos */
+        .marker-foto {
+            background-color: #3498db;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <div class="info-panel">
+        <h3>📍 Campaña Isótopos 2026</h3>
+        <p><strong>Puntos de muestreo:</strong> <span id="puntos-count">0</span></p>
+        <p><strong>Fotos geolocalizadas:</strong> <span id="fotos-count">0</span></p>
+        <p style="margin-top: 10px; font-size: 12px; color: #7f8c8d;">
+            Haz clic en los marcadores para ver detalles
+        </p>
+    </div>
+    
+    <div class="legend">
+        <h4>Leyenda</h4>
+        <div class="legend-item">
+            <span class="legend-icon punto-muestreo"></span>
+            <span>Puntos de muestreo</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-icon foto-marker"></span>
+            <span>Fotografías</span>
+        </div>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    
+    <!-- PapaParse para CSV -->
+    <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+    
+    <script>
+        // Inicializar el mapa centrado en la región de estudio
+        const map = L.map('map').setView([-25.5, -67.0], 8);
+        
+        // Capa base: Google Satellite (requiere plugin)
+        // Alternativa: Esri World Imagery (no requiere API key)
+        const esriSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+            maxZoom: 18
+        }).addTo(map);
+        
+        // Capa de etiquetas para superponer sobre el satélite
+        const esriLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '',
+            maxZoom: 18
+        }).addTo(map);
+        
+        // Grupos de marcadores con clustering
+        const puntosGroup = L.markerClusterGroup({
+            maxClusterRadius: 50,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true
+        });
+        
+        const fotosGroup = L.markerClusterGroup({
+            maxClusterRadius: 30,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true
+        });
+        
+        // Icono personalizado para puntos de muestreo
+        function createPuntoIcon(label) {
+            return L.divIcon({
+                className: 'marker-punto',
+                html: `<div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #e74c3c; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-weight: bold; color: white; font-size: 11px;">${label}</div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15],
+                popupAnchor: [0, -15]
+            });
+        }
+        
+        // Icono para fotos
+        const fotoIcon = L.divIcon({
+            className: 'marker-foto',
+            html: '<div style="width: 20px; height: 20px; background-color: #3498db; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"></div>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -10]
+        });
+        
+        // Cargar datos del CSV
+        fetch('Puntos%20de_Muestreo_de_Isotopos_2026.csv')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error cargando CSV: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(csvText => {
+                const results = Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true
+                });
+                
+                const bounds = [];
+                
+                results.data.forEach(punto => {
+                    const lat = parseFloat(punto.ycoord);
+                    const lon = parseFloat(punto.xcoord);
+                    
+                    if (!isNaN(lat) && !isNaN(lon)) {
+                        bounds.push([lat, lon]);
+                        
+                        const popupContent = `
+                            <div class="popup-content">
+                                <h4>🎯 ${punto.name}</h4>
+                                <p><strong>Coordenadas:</strong><br>
+                                   Lat: ${lat.toFixed(6)}°<br>
+                                   Lon: ${lon.toFixed(6)}°</p>
+                                <p><strong>Elevación:</strong> ${parseFloat(punto.ele).toFixed(1)} m</p>
+                                <p><strong>Fecha:</strong> ${punto.time}</p>
+                            </div>
+                        `;
+                        
+                        const marker = L.marker([lat, lon], {
+                            icon: createPuntoIcon(punto.name.replace('I', ''))
+                        }).bindPopup(popupContent);
+                        
+                        puntosGroup.addLayer(marker);
+                    }
+                });
+                
+                map.addLayer(puntosGroup);
+                document.getElementById('puntos-count').textContent = results.data.length;
+                
+                // Ajustar el mapa a los límites de los puntos
+                if (bounds.length > 0) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                }
+            })
+            .catch(error => console.error('Error cargando CSV:', error));
+        
+        // Cargar coordenadas de fotos
+        fetch('photo_coordinates.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error cargando JSON: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(photos => {
+                photos.forEach(photo => {
+                    const lat = photo.lat;
+                    const lon = photo.lon;
+                    
+                    const popupContent = `
+                        <div class="popup-content">
+                            <h4>📷 ${photo.filename}</h4>
+                            <p><strong>Coordenadas:</strong><br>
+                               Lat: ${lat.toFixed(6)}°<br>
+                               Lon: ${lon.toFixed(6)}°</p>
+                            <img src="Fotos/${photo.filename}" 
+                                 class="photo-thumbnail" 
+                                 alt="${photo.filename}"
+                                 onclick="window.open('Fotos/${photo.filename}', '_blank')">
+                            <p style="font-size: 11px; color: #7f8c8d; margin-top: 5px;">
+                                Haz clic en la imagen para verla en tamaño completo
+                            </p>
+                        </div>
+                    `;
+                    
+                    const marker = L.marker([lat, lon], {
+                        icon: fotoIcon
+                    }).bindPopup(popupContent, {
+                        maxWidth: 320
+                    });
+                    
+                    fotosGroup.addLayer(marker);
+                });
+                
+                map.addLayer(fotosGroup);
+                document.getElementById('fotos-count').textContent = photos.length;
+            })
+            .catch(error => console.error('Error cargando coordenadas de fotos:', error));
+        
+        // Control de capas
+        const baseMaps = {
+            "🛰️ Satélite": esriSatellite
+        };
+        
+        const overlayMaps = {
+            "📍 Puntos de muestreo": puntosGroup,
+            "📷 Fotografías": fotosGroup,
+            "🏷️ Etiquetas": esriLabels
+        };
+        
+        L.control.layers(baseMaps, overlayMaps, {
+            position: 'topleft',
+            collapsed: false
+        }).addTo(map);
+        
+        // Escala
+        L.control.scale({
+            imperial: false,
+            metric: true,
+            position: 'bottomleft'
+        }).addTo(map);
+        
+    </script>
+</body>
+</html>

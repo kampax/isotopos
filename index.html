@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Índice de Sitios - Campaña Isótopos 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .header .stats {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        
+        .nav-links {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 2px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #764ba2;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .sitios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .sitio-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+        
+        .sitio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+        
+        .sitio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .sitio-header h3 {
+            color: #667eea;
+            font-size: 1.5em;
+        }
+        
+        .badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .sitio-info {
+            margin: 15px 0;
+        }
+        
+        .sitio-info p {
+            margin: 8px 0;
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .btn-ver {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-ver:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ Campaña Isótopos 2026</h1>
+            <p>Índice de Sitios de Muestreo</p>
+            <div class="stats">
+                📍 12 sitios documentados
+            </div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="mapa_isotopos.html">🗺️ Ver mapa general con todos los sitios</a>
+        </div>
+        
+        <div class="content">
+            <div class="sitios-grid">
+                
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I01</h3>
+                <span class="badge">2 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -26.693900°, -67.179900°</p>
+                <p><strong>Elevación:</strong> 3798.53 m</p>
+                <p><strong>pH:</strong> 7.48</p>
+                <p><strong>Conductividad:</strong> 0.99</p>
+            </div>
+            <a href="I01.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I02</h3>
+                <span class="badge">4 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.920800°, -67.323200°</p>
+                <p><strong>Elevación:</strong> 3814.22 m</p>
+                <p><strong>pH:</strong> 7.1</p>
+                <p><strong>Conductividad:</strong> 0.18</p>
+            </div>
+            <a href="I02.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I03</h3>
+                <span class="badge">2 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.918200°, -67.331800°</p>
+                <p><strong>Elevación:</strong> 3760.12 m</p>
+                <p><strong>pH:</strong> N/D</p>
+                <p><strong>Conductividad:</strong> N/D</p>
+            </div>
+            <a href="I03.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I04</h3>
+                <span class="badge">2 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.758500°, -67.227100°</p>
+                <p><strong>Elevación:</strong> 4252.30 m</p>
+                <p><strong>pH:</strong> 8.29</p>
+                <p><strong>Conductividad:</strong> 0.29</p>
+            </div>
+            <a href="I04.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I05</h3>
+                <span class="badge">4 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.701700°, -67.169900°</p>
+                <p><strong>Elevación:</strong> 4349.09 m</p>
+                <p><strong>pH:</strong> 8.33</p>
+                <p><strong>Conductividad:</strong> 0.22</p>
+            </div>
+            <a href="I05.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I06</h3>
+                <span class="badge">5 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.688700°, -67.142000°</p>
+                <p><strong>Elevación:</strong> 4404.18 m</p>
+                <p><strong>pH:</strong> N/D</p>
+                <p><strong>Conductividad:</strong> N/D</p>
+            </div>
+            <a href="I06.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I07</h3>
+                <span class="badge">5 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.619400°, -67.098700°</p>
+                <p><strong>Elevación:</strong> 4474.18 m</p>
+                <p><strong>pH:</strong> 7.4</p>
+                <p><strong>Conductividad:</strong> 0.21</p>
+            </div>
+            <a href="I07.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I08</h3>
+                <span class="badge">4 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -25.539900°, -67.098500°</p>
+                <p><strong>Elevación:</strong> 4097.48 m</p>
+                <p><strong>pH:</strong> 7.83</p>
+                <p><strong>Conductividad:</strong> 0.33</p>
+            </div>
+            <a href="I08.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I09</h3>
+                <span class="badge">2 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -24.616900°, -66.667100°</p>
+                <p><strong>Elevación:</strong> 3806.12 m</p>
+                <p><strong>pH:</strong> 8.43</p>
+                <p><strong>Conductividad:</strong> 4.62</p>
+            </div>
+            <a href="I09.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I10</h3>
+                <span class="badge">5 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -24.023100°, -67.236500°</p>
+                <p><strong>Elevación:</strong> 3777.77 m</p>
+                <p><strong>pH:</strong> 7.71</p>
+                <p><strong>Conductividad:</strong> 0.2</p>
+            </div>
+            <a href="I10.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I11</h3>
+                <span class="badge">5 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -24.022100°, -67.231400°</p>
+                <p><strong>Elevación:</strong> 3733.19 m</p>
+                <p><strong>pH:</strong> 7.59</p>
+                <p><strong>Conductividad:</strong> 0.2</p>
+            </div>
+            <a href="I11.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+        <div class="sitio-card">
+            <div class="sitio-header">
+                <h3>I12</h3>
+                <span class="badge">4 fotos</span>
+            </div>
+            <div class="sitio-info">
+                <p><strong>Coordenadas:</strong> -24.193500°, -66.553300°</p>
+                <p><strong>Elevación:</strong> 4321.87 m</p>
+                <p><strong>pH:</strong> 8.78</p>
+                <p><strong>Conductividad:</strong> 0.79</p>
+            </div>
+            <a href="I12.html" class="btn-ver">Ver detalles →</a>
+        </div>
+        
+            </div>
+        </div>
+    </div>
+</body>
+</html>
